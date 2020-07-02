@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "463729675715",
+    "firebase_url": "https://blonjoapps.firebaseio.com",
+    "project_id": "blonjoapps",
+    "storage_bucket": "blonjoapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463729675715:android:726b7b5adae2b87964c176",
+        "android_client_info": {
+          "package_name": "com.apdef.mentari"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463729675715-ai1ulq7dstlam0lvu7tfrh7lmff0us3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apdef.mentari",
+            "certificate_hash": "197e0e99b93e9e896a1c658c31de39ad29456c6c"
+          }
+        },
+        {
+          "client_id": "463729675715-q46pcu7lrjd3ab3h0m1bvh08bjeis94a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo4AVj6YEiPbTcjH25xIA5UVs0fBV6I08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463729675715-q46pcu7lrjd3ab3h0m1bvh08bjeis94a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

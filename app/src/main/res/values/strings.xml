@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">mentari</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="order">Transaksi</string>
+    <string name="profil">Profil</string>
+    <string name="sembako">Sembako</string>
+    <string name="sembako_desc">Belanja kebutuhan pokok seperti beras, daging, telur, dan lainnya.</string>
+    <string name="pulsa">Pulsa</string>
+    <string name="pulsa_desc">Isi ulang pulsa dari berbagai macam provider.</string>
+    <string name="checkout">Checkout</string>
+    <string name="akun_baru">Register</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="next">Lanjutkan</string>
+    <string name="nama">Name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="pass_confirm">Confirm Password</string>
+    <string name="gas">Gas</string>
+    <string name="gas_desc">Beli gas dengan berbagai ukuran</string>
+    <string name="galon_air_mineral">Galon Air Mineral</string>
+    <string name="beli_galon_air_mineral">Beli galon air mineral.</string>
+    <string name="masukkan_kode_voucher">Masukkan kode voucher</string>
+    <string name="top_up">Top Up</string>
+</resources>
