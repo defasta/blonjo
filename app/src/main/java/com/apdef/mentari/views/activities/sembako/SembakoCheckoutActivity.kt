@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.apdef.mentari.BuildConfig
 import com.apdef.mentari.MainActivity
 import com.apdef.mentari.R
 import com.apdef.mentari.api.RetrofitClient
@@ -82,7 +83,7 @@ class SembakoCheckoutActivity : AppCompatActivity() {
 
     private fun getTime(cartData: List<Product>, total:Int){
         val uid = userAuth?.uid.toString()
-        RetrofitClient.instance.getTime("XAEEV5QFFFLL", "json", "zone", "Asia/Jakarta" )
+        RetrofitClient.instance.getTime(BuildConfig.TimeSecAPIKEY, "json", "zone", "Asia/Jakarta" )
             .enqueue(object : Callback<ResponseTime> {
                 override fun onFailure(call: Call<ResponseTime>, t: Throwable) {
                     Log.e("ERROR FAILURE",t.toString())
