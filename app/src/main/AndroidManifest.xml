@@ -2,26 +2,45 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.apdef.mentari">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.activities.TopupActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".views.activities.SplashActivity"
+            android:theme="@style/HiddenTitleTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".views.activities.profile.EditProfilePictureActivity" />
+        <activity
+            android:name=".views.activities.topup.TopupActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".views.activities.transaction.TransactionDetailActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".views.activities.sembako.SembakoCheckoutActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:parentActivityName=".views.activities.sembako.SembakoActivity"/>
-        <activity
-            android:name=".views.activities.PulsaActivity"
+            android:parentActivityName=".views.activities.sembako.SembakoActivity"
             android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".views.activities.sembako.SembakoActivity"
@@ -36,11 +55,7 @@
         <activity
             android:name=".views.activities.auth.LoginActivity"
             android:theme="@style/HiddenTitleTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

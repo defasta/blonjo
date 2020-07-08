@@ -66,9 +66,30 @@ class LoginActivity : AppCompatActivity() {
                     val userAuth = mAuth.currentUser
                     val token  = userAuth?.uid.toString()
 
+                    db.child(token).addValueEventListener(object :ValueEventListener{
+                        override fun onCancelled(error: DatabaseError) {
+                            Toast.makeText(applicationContext, "Registrasi gagal!", Toast.LENGTH_LONG).show()
+                        }
+
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val user = snapshot.getValue(User::class.java)
+                            if(user== null){
+                                Toast.makeText(applicationContext, "Username tidak ditemukan!", Toast.LENGTH_LONG).show()
+                            }else{
+                                pref.setValues("username", user.username.toString())
+                                pref.setValues("saldo", user.saldo.toString())
+                                pref.setValues("email", user.email.toString())
+                                pref.setValues("status", "1")
+                                val i = Intent(this@LoginActivity, MainActivity::class.java)
+                                startActivity(i)
+                                Toast.makeText(applicationContext, "Welcome", Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                    })
+                    pref.setValues("status", "1")
                     val i = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(i)
-
                     Toast.makeText(this@LoginActivity, "Welcome!", Toast.LENGTH_LONG).show()
                     pref.setValues("status", "1")
                 }else{

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.apdef.mentari.R
 import com.apdef.mentari.models.Transaction
+import com.apdef.mentari.views.Utils.Companion.rupiah
 import kotlinx.android.synthetic.main.item_list.view.*
 
 class TransactionAdapter(var transaction: ArrayList<Transaction>): RecyclerView.Adapter<TransactionAdapter.TransactionVh>() {
@@ -40,7 +41,7 @@ class TransactionAdapter(var transaction: ArrayList<Transaction>): RecyclerView.
 //            var setTitle = data.name!!.toString()
             with(view){
                 tv_date.text = data.time.toString()
-                tv_title.text = data.total.toString()
+                tv_title.text = rupiah(data.total.toString().toDouble())
                 //tv_price_product.text = setItemCount +"kg x "+ setPrice
             }
         }

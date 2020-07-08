@@ -13,8 +13,11 @@ import com.apdef.mentari.R
 import com.apdef.mentari.api.RetrofitClient
 import com.apdef.mentari.models.ResponseTime
 import com.apdef.mentari.models.Product
+import com.apdef.mentari.models.Transaction
+import com.apdef.mentari.models.User
 import com.apdef.mentari.storage.AppDatabase
 import com.apdef.mentari.storage.SharedPref
+import com.apdef.mentari.views.Utils.Companion.rupiah
 import com.apdef.mentari.views.adapters.SembakoCheckoutAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -29,20 +32,27 @@ import retrofit2.Response
 import java.io.IOException
 
 class SembakoCheckoutActivity : AppCompatActivity() {
-    private lateinit var db: DatabaseReference
-    //private lateinit var dbUser:DatabaseReference
+    private lateinit var dbTransaction: DatabaseReference
+    private lateinit var dbUser:DatabaseReference
     private lateinit var pref: SharedPref
     private var userAuth = FirebaseAuth.getInstance().currentUser
     private var mContext: Context? = null
     private var total = 0
+    private var listTransaction= ArrayList<com.apdef.mentari.models.Transaction>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sembako_checkout)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        db = FirebaseDatabase.getInstance().getReference("transaction")
+        dbTransaction = FirebaseDatabase.getInstance().getReference("transaction")
+        dbUser = FirebaseDatabase.getInstance().getReference("user")
         pref = SharedPref(this)
         showCart()
+        if (total == 0){
+            btn_process.visibility = View.GONE
+        }else{
+            btn_process.visibility = View.VISIBLE
+        }
     }
 
     private fun showCart(){
@@ -58,14 +68,17 @@ class SembakoCheckoutActivity : AppCompatActivity() {
                 if(it.count!!>=1){
                     total += it.price!! * it.count!!
                 }
-                tv_charge.text = "Rp. "+ total.toString()
+                tv_charge.text = rupiah(total.toString().toDouble())
             }
         }
+        val saldoNow = pref.getValues("saldo").toString().toInt()
+        val saldoAkhir = saldoNow - total
         btn_process.setOnClickListener {
-            getTime(cartData, total)
-            val i = Intent(this@SembakoCheckoutActivity, MainActivity::class.java)
-            startActivity(i)
-            finish()
+            if (saldoAkhir < 0){
+                Toast.makeText(this, "Saldo tidak cukup!", Toast.LENGTH_LONG).show()
+            }else {
+                getTime(cartData, total)
+            }
         }
     }
 
@@ -102,21 +115,60 @@ class SembakoCheckoutActivity : AppCompatActivity() {
 
     private fun saveData(time: String, cartData: List<Product>, uid:String, total: Int){
         val username = pref.getValues("username")
-        db.child(uid).addValueEventListener(object :ValueEventListener{
+        val saldoNow = pref.getValues("saldo").toString().toInt()
+        val saldoAkhir = saldoNow - total
+
+        dbTransaction.child(uid).addValueEventListener(object :ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@SembakoCheckoutActivity, "error:"+ error.message, Toast.LENGTH_LONG).show()
             }
             override fun onDataChange(snapshot: DataSnapshot) {
                 cartData.forEach {
                     it.time = time
-                    db.child(uid).child(time).child("time").setValue(time)
-                    db.child(uid).child(time).child("username").setValue(username)
-                    db.child(uid).child(time).child("data").child(it.id).setValue(it)
-                    db.child(uid).child(time).child("total").setValue(total)
+                    dbTransaction.child(uid).child(time).child("time").setValue(time)
+                    dbTransaction.child(uid).child(time).child("username").setValue(username)
+                    dbTransaction.child(uid).child(time).child("data").child(it.id).setValue(it)
+                    dbTransaction.child(uid).child(time).child("total").setValue(total)
                 }
-                Toast.makeText(applicationContext, "Transaksi berhasil!", Toast.LENGTH_LONG).show()
+
+                val data = User()
+                data.saldo = saldoAkhir
+                data.username = pref.getValues("username")
+                data.email = pref.getValues("email")
+                data.token = uid
+
+                dbUser.child(uid).setValue(data)
+                pref.setValues("saldo", saldoAkhir.toString())
+                Toast.makeText(applicationContext, "Transaksi berhasil!",Toast.LENGTH_LONG).show()
+                val i = Intent(this@SembakoCheckoutActivity, MainActivity::class.java)
+                startActivity(i)
+                finishAffinity()
+//                dbUser.child(uid).addValueEventListener(object : ValueEventListener{
+//                    override fun onCancelled(error: DatabaseError) {
+//                        Toast.makeText(applicationContext, "Transaksi gagal, silahkan coba lagi", Toast.LENGTH_LONG).show()
+//                    }
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        val data = User()
+//                        data.saldo = saldoAkhir
+//                        data.username = pref.getValues("username")
+//                        data.email = pref.getValues("email")
+//                        data.token = uid
+////                        val user = snapshot.getValue(User::class.java)
+////                        if(user==null){
+////                            Toast.makeText(applicationContext, "Username tidak ditemukan!", Toast.LENGTH_LONG).show()
+////                        }else{
+//                            dbUser.child(uid).setValue(data)
+//                            pref.setValues("saldo", saldoAkhir.toString())
+//                            Toast.makeText(applicationContext, "Transaksi berhasil!",Toast.LENGTH_LONG).show()
+//                            val i = Intent(this@SembakoCheckoutActivity, MainActivity::class.java)
+//                            startActivity(i)
+//                            finishAffinity()
+////                        }
+//                    }
+//                })
             }
         })
+
 
 
     }

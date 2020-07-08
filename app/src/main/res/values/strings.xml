@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mentari</string>
+    <string name="app_name">BlonjoKuy</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dashboard">Dashboard</string>
@@ -25,4 +25,5 @@
     <string name="beli_galon_air_mineral">Beli galon air mineral.</string>
     <string name="masukkan_kode_voucher">Masukkan kode voucher</string>
     <string name="top_up">Top Up</string>
+    <string name="riwayat">Riwayat</string>
 </resources>

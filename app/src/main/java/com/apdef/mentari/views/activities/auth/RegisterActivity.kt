@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var mAuth : FirebaseAuth
-    private var userAuth = FirebaseAuth.getInstance().currentUser
+    //private var userAuth = FirebaseAuth.getInstance().currentUser
     private lateinit var username: String
     private lateinit var password: String
     private lateinit var passwordConfirm: String
@@ -64,14 +64,39 @@ class RegisterActivity : AppCompatActivity() {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful){
-                    pref.setValues("username", username)
-                    pref.setValues("email", email)
-                    pref.setValues("status", "1")
-                    val i = Intent(this@RegisterActivity, MainActivity::class.java)
-                    startActivity(i)
-                    Toast.makeText(applicationContext, "Welcome", Toast.LENGTH_LONG).show()
+
+                    var currentUser = mAuth.currentUser
+                    val token = currentUser?.uid.toString()
+                    val data = User()
+                    data.username = username
+                    data.email = email
+                    data.token = token
+                    data.saldo = 0
+
+                    db.child(token).addValueEventListener(object :ValueEventListener{
+                        override fun onCancelled(error: DatabaseError) {
+                            Toast.makeText(applicationContext, "Registrasi gagal!", Toast.LENGTH_LONG).show()
+                        }
+
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val user = snapshot.getValue(User::class.java)
+                            if(user== null){
+                                db.child(token).setValue(data)
+                                pref.setValues("username", data.username.toString())
+                                pref.setValues("email", data.email.toString())
+                                pref.setValues("saldo", data.saldo.toString())
+                                pref.setValues("status", "1")
+                                val i = Intent(this@RegisterActivity, MainActivity::class.java)
+                                startActivity(i)
+                                Toast.makeText(applicationContext, "Welcome", Toast.LENGTH_LONG).show()
+                            }else{
+                                Toast.makeText(applicationContext, "Email sudah terdaftar", Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                    })
                 }else{
-                    Toast.makeText(applicationContext, "Registrasi gagal!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Email sudah terdaftar!", Toast.LENGTH_LONG).show()
                 }
             }
     }

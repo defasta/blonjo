@@ -28,14 +28,14 @@ class TransactionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        onResume()
         return inflater.inflate(R.layout.fragment_transaction, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onResume() {
+        super.onResume()
         val uid = userAuth?.uid.toString()
-        super.onActivityCreated(savedInstanceState)
         pref = SharedPref(this!!.context!!)
-        val username = pref.getValues("username")
         dbRef = FirebaseDatabase.getInstance().getReference("transaction")
             .child(uid)
         getListTransaction()
@@ -55,7 +55,6 @@ class TransactionFragment : Fragment() {
                 }
                 showListTransaction(listTransaction)
             }
-
         })
     }
 

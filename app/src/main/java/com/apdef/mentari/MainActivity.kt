@@ -5,10 +5,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.apdef.mentari.presenters.MainPresenters
 import com.apdef.mentari.views.fragments.DashboardFragment
+import com.apdef.mentari.views.fragments.HomeFragment
 import com.apdef.mentari.views.fragments.TransactionFragment
 import com.apdef.mentari.views.fragments.ProfileFragment
 import com.apdef.mentari.views.interfaces.MainView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(), MainView {
     var presenter : MainPresenters? = null
@@ -22,10 +24,13 @@ class MainActivity : AppCompatActivity(), MainView {
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId){
                 R.id.nav_dashboard ->{
-                    presenter?.showFragment(DashboardFragment(),savedInstanceState)
+                    presenter?.showFragment(HomeFragment(),savedInstanceState)
                 }
                 R.id.nav_order -> {
                     presenter?.showFragment(TransactionFragment(),savedInstanceState)
+                }
+                R.id.nav_profil ->{
+                    presenter?.showFragment(ProfileFragment(),savedInstanceState)
                 }
             }
             true
@@ -52,5 +57,10 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onDetachView() {
         onDetachView()
         super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
     }
 }

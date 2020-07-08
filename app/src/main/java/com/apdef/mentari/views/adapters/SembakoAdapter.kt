@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.apdef.mentari.R
 import com.apdef.mentari.models.Product
 import com.apdef.mentari.storage.AppDatabase
+import com.apdef.mentari.views.Utils.Companion.rupiah
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_list_product.view.*
+import kotlinx.android.synthetic.main.item_list_products.view.*
 
 class SembakoAdapter(val sembako: ArrayList<Product>):RecyclerView.Adapter<SembakoAdapter.SembakoVH>() {
     private var mContext: Context? = null
     private var itemClick: ItemClick? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SembakoAdapter.SembakoVH {
-        val inflater = LayoutInflater.from(parent.context).inflate(R.layout.item_list_product, parent, false)
+        val inflater = LayoutInflater.from(parent.context).inflate(R.layout.item_list_products, parent, false)
         mContext = parent.context
         return SembakoVH(inflater)
     }
@@ -30,17 +31,17 @@ class SembakoAdapter(val sembako: ArrayList<Product>):RecyclerView.Adapter<Semba
     inner class SembakoVH(itemView: View): RecyclerView.ViewHolder(itemView){
         fun bind(data: Product){
             itemView.tv_title_product.text = data.name.toString()
-            itemView.tv_price_product.text = data.price.toString()
+            itemView.tv_price_product.text = rupiah(data.price.toString().toDouble())
             Glide.with(itemView).load(data.images).into(itemView.iv_product)
             if (data.count!=null) {
                 if (data.count!!>0) {
                     itemView.btn_qty.visibility = View.VISIBLE
-                    itemView.btn_buy_product.visibility = View.GONE
+                    itemView.btn_buy.visibility = View.GONE
                     itemView.tv_jumlah.text = data.count.toString()
-                    itemView.tv_price_product.text = setPriceItem(data.count!!, data.price!!).toString()
+                    itemView.tv_price_product.text = rupiah(setPriceItem(data.count!!, data.price!!).toString().toDouble())
                 } else {
                     itemView.btn_qty.visibility = View.GONE
-                    itemView.btn_buy_product.visibility = View.VISIBLE
+                    itemView.btn_buy.visibility = View.VISIBLE
                 }
             }
 
@@ -60,26 +61,26 @@ class SembakoAdapter(val sembako: ArrayList<Product>):RecyclerView.Adapter<Semba
             if (data.count!=null) {
                 if (data.count!!>0) {
                     itemView.btn_qty.visibility = View.VISIBLE
-                    itemView.btn_buy_product.visibility = View.GONE
+                    itemView.btn_buy.visibility = View.GONE
                     setItemCount = data.count!!
                     setPrice = data.price!!.toInt()
                     view.btn_qty.visibility = View.VISIBLE
-                    view.btn_buy_product.visibility = View.GONE
+                    view.btn_buy.visibility = View.GONE
                 } else {
                     itemView.btn_qty.visibility = View.GONE
-                    itemView.btn_buy_product.visibility = View.VISIBLE
+                    itemView.btn_buy.visibility = View.VISIBLE
                 }
             } else {
                 setItemCount = 0
             }
 
-            view.btn_buy_product.setOnClickListener {
+            view.btn_buy.setOnClickListener {
                 data.count = 1
                 AppDatabase.getInstance(mContext!!)?.productDao()?.insertOrUpdate(data)
                 setItemCount = data.count!!
                 setPrice = data.price!!
                 itemView.btn_qty.visibility = View.VISIBLE
-                itemView.btn_buy_product.visibility = View.GONE
+                itemView.btn_buy.visibility = View.GONE
             }
 
             data.count = setItemCount
@@ -89,7 +90,7 @@ class SembakoAdapter(val sembako: ArrayList<Product>):RecyclerView.Adapter<Semba
                 setItemCount++
                 view.btn_qty.visibility = View.VISIBLE
                 view.tv_jumlah.text = setItemCount.toString()
-                view.tv_price_product.text = setPriceItem(setItemCount, setPrice).toString()
+                view.tv_price_product.text = rupiah(setPriceItem(setItemCount, setPrice).toString().toDouble())
                 data.count = setItemCount
                 AppDatabase.getInstance(mContext!!)?.productDao()?.insertOrUpdate(data)
             }
@@ -98,10 +99,10 @@ class SembakoAdapter(val sembako: ArrayList<Product>):RecyclerView.Adapter<Semba
                 setItemCount--
                 if (setItemCount <= 0) {
                     view.btn_qty.visibility = View.GONE
-                    view.btn_buy_product.visibility = View.VISIBLE
+                    view.btn_buy.visibility = View.VISIBLE
                 } else {
                     view.tv_jumlah.text = setItemCount.toString()
-                    view.tv_price_product.text =  setPriceItem(setItemCount, setPrice).toString()
+                    view.tv_price_product.text =  rupiah(setPriceItem(setItemCount, setPrice).toString().toDouble())
                 }
                 data.count = setItemCount
                 AppDatabase.getInstance(mContext!!)?.productDao()?.update(data)
