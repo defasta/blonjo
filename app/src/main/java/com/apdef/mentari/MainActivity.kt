@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.apdef.mentari.presenters.MainPresenters
-import com.apdef.mentari.views.fragments.DashboardFragment
 import com.apdef.mentari.views.fragments.HomeFragment
 import com.apdef.mentari.views.fragments.TransactionFragment
 import com.apdef.mentari.views.fragments.ProfileFragment
 import com.apdef.mentari.views.interfaces.MainView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(), MainView {
     var presenter : MainPresenters? = null

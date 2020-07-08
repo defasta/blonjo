@@ -21,10 +21,8 @@ import com.apdef.mentari.views.Utils.Companion.rupiah
 import com.apdef.mentari.views.adapters.SembakoCheckoutAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_sembako.*
 import kotlinx.android.synthetic.main.activity_sembako_checkout.*
 import kotlinx.android.synthetic.main.activity_sembako_checkout.toolbar
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import org.json.JSONException
 import retrofit2.Call
 import retrofit2.Callback
